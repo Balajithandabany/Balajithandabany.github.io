@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<header>
+<title>Web Messenger deploy</title>
+
+</header>
+<body onload="HideMessenger()">
+
+  <script type="text/javascript" charset="utf-8">
+   (function (g, e, n, es, ys) {
+    g['_genesysJs'] = e;
+    g[e] = g[e] || function () {
+      (g[e].q = g[e].q || []).push(arguments)
+    };
+    g[e].t = 1 * new Date();
+    g[e].c = es;
+    ys = document.createElement('script'); ys.async = 1; ys.src = n; ys.charset = 'utf-8'; document.head.appendChild(ys);
+   })(window, 'Genesys', 'https://apps.mypurecloud.de/genesys-bootstrap/genesys.min.js', {
+    environment: 'prod-euc1',
+    deploymentId: '91442e3c-947f-40d4-a457-04fb772ae223'
+    });
+  
+
+function HideMessenger()
+{
+Genesys("command", "Messenger.close");
+//Genesys("command", "Launcher.hide");
+} 
+	
+function ShowMessenger() {
+
+var firstName = document.getElementById('first-name').value; 
+var lastName = document.getElementById('last-name').value;
+var emailAddress = document.getElementById('emailaddress').value;
+
+Genesys("command", "Messenger.open");
+//Genesys("command", "Launcher.show");
+
+  Genesys("command", "Database.set", {
+  messaging: {
+    customAttributes: {
+      email: emailAddress,
+	  name: firstName,
+	  surname: lastName
+    }
+  }  
+});
+}	
+</script>
+ 
+ <h2 style="text-decoration: underline;">Web Messenger Demo</h2>
+    <form id="chatForm">
+        <table class="webmessenger-config" >
+            <tbody>
+                <tr>
+                    <th>First Name:</th>
+                    <td><input type="text" id="first-name" value="Paddington" /></td>
+                </tr>
+                <tr>
+                    <th>Last Name:</th>
+                    <td><input type="text" id="last-name" value="Bear" /></td>
+                </tr>
+				<tr>
+                    <th>Email:</th>
+                    <td><input type="text" id="emailaddress" value="bear@paddington.org" /></td>
+                </tr>
+				
+            </tbody>
+        </table>
+        <button type="button" onclick="ShowMessenger()">Set Participant Info</button>
+    </form>
+    <div style="height:600px" id="chat-container"></div>
+<script>
+
+
+</script>	
+
+</body>
+</html>
