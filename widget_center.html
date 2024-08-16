@@ -12,15 +12,6 @@
       justify-content: center;
       align-items: center;
     }
-
-    /* Override widget's default position */
-    .cx-widget {
-      position: fixed !important; /* Ensure it’s fixed in place */
-      top: 50% !important;        /* Center vertically */
-      left: 50% !important;       /* Center horizontally */
-      transform: translate(-50%, -50%) !important; /* Adjust to be centered */
-      margin: 0 !important;       /* Remove any default margin */
-    }
   </style>
 </head>
 <body>
@@ -36,6 +27,19 @@
     })(window, 'Genesys', 'https://apps.usw2.pure.cloud/genesys-bootstrap/genesys.min.js', {
       environment: 'prod-usw2',
       deploymentId: '7ca07e94-3766-4b49-8f8e-897a4bb0e31a'
+    });
+
+    // Wait until the widget is fully loaded, then move it
+    window.Genesys(function() {
+      // Attempt to reposition the widget
+      const widget = document.querySelector('.cx-widget');
+      if (widget) {
+        widget.style.position = 'fixed';
+        widget.style.top = '50%';
+        widget.style.left = '50%';
+        widget.style.transform = 'translate(-50%, -50%)';
+        widget.style.margin = '0';
+      }
     });
   </script>
 </body>
