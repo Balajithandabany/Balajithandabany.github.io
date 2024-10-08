@@ -17,6 +17,9 @@
     environment: 'prod-usw2',
     deploymentId: '7ca07e94-3766-4b49-8f8e-897a4bb0e31a',
     debug:true
+    Genesys("subscribe", "Journey.qualifiedWebMessagingOffer", ({ data }) => {
+    console.log("Received qualified web messaging offer:", data);
+});
     });
 </script>
 </head>
