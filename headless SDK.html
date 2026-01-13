@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Genesys Headless Messenger</title>
+
+  <!-- Your deployment snippet -->
+  <script type="text/javascript" charset="utf-8">
+    (function (g, e, n, es, ys) {
+      g['_genesysJs'] = e;
+      g[e] = g[e] || function () { (g[e].q = g[e].q || []).push(arguments) };
+      g[e].t = 1 * new Date();
+      g[e].c = es;
+      ys = document.createElement('script'); ys.async = 1; ys.src = n; ys.charset = 'utf-8'; document.head.appendChild(ys);
+    })(window, 'Genesys', 'https://apps.usw2.pure.cloud/genesys-bootstrap/genesys.min.js', {
+      environment: 'prod-usw2',
+      deploymentId: '6a416160-9d98-4164-a3da-023b524da1c7'
+    });
+  </script>
+</head>
+
+<body style="font-family: Arial, sans-serif;">
+  <h3>Chat</h3>
+
+  <div id="messages"
+       style="border:1px solid #ccc; height:260px; width:360px; overflow:auto; padding:8px; margin-bottom:8px;">
+  </div>
+
+  <input id="messageInput" type="text" placeholder="Type message..."
+         style="width:280px; padding:6px;" />
+  <button id="sendBtn" style="padding:6px 10px;">Send</button>
+
+  <script>
+    const messagesDiv = document.getElementById("messages");
+    const input = document.getElementById("messageInput");
+    const sendBtn = document.getElementById("sendBtn");
+
+    function addMessage(sender, text) {
+      const line = document.createElement("div");
+      line.innerHTML = "<b>" + sender + ":</b> " + (text || "");
+      messagesDiv.appendChild(line);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function safeGetText(data) {
+      // Different events sometimes structure text differently. This keeps it from crashing.
+      return data?.message?.text || data?.text || "";
+    }
+
+    // 1) Wait until Genesys messaging is ready
+    Genesys("subscribe", "MessagingService.ready", function () {
+      addMessage("System", "Messaging ready");
+
+      // 2) Configure/resume a conversation session
+      Genesys("command", "MessagingService.configureConversation", {}, function (resp) {
+        addMessage("System", "Conversation configured");
+      });
+    });
+
+    // 3) Receive inbound messages (agent/bot)
+    Genesys("subscribe", "MessagingService.messageReceived", function (data) {
+      addMessage("Agent", safeGetText(data));
+    });
+
+    // 4) Send message
+    function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMessage("You", text);
+
+      Genesys("command", "MessagingService.sendMessage", { text: text });
+      input.value = "";
+      input.focus();
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+</body>
+</html>
