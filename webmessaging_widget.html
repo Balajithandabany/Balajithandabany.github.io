@@ -27,28 +27,54 @@
 
   <!-- Journey Test Script -->
   <script>
-    // When Journey plugin is ready
     Genesys("subscribe", "Journey.ready", function () {
       console.log("✅ Journey ready");
 
-      // Send ONE test event
-      Genesys("command", "Journey.record", {
-        eventName: "balaji_step1_test"
+      // 1️⃣ Send pageview
+      Genesys("command", "Journey.pageview", {
+        pageTitle: document.title,
+        pageLocation: window.location.href,
+        customAttributes: {
+          testPage: "github"
+        }
       });
+      console.log("✅ Journey pageview sent");
 
+      // 2️⃣ Send custom event
+      Genesys("command", "Journey.record", {
+        eventName: "balaji_console_step2",
+        customAttributes: {
+          source: "github-pages",
+          page: window.location.pathname,
+          env: "test"
+        }
+      });
       console.log("✅ Journey test event sent");
     });
 
-    // Messenger ready (just for confirmation)
+    // Messenger ready (sanity check)
     Genesys("subscribe", "Messenger.ready", function () {
       console.log("✅ Messenger ready");
+    });
+
+    // 3️⃣ Listen for qualification events (from Predictive Engagement)
+    Genesys("subscribe", "Journey.qualifiedWebMessagingOffer", function (data) {
+      console.log("✅ Qualified web messaging offer", data);
+    });
+
+    Genesys("subscribe", "Journey.qualifiedContentOffer", function (data) {
+      console.log("✅ Qualified content offer", data);
+    });
+
+    Genesys("subscribe", "Journey.qualifiedOpenAction", function (data) {
+      console.log("✅ Qualified open action", data);
     });
   </script>
 
 </head>
 
 <body>
-  <h1>Genesys Journey Test Page</h1>
-  <p>Open console (F12) to see logs.</p>
+  <h1>Genesys Journey Step 2 Test</h1>
+  <p>Open Console (F12) to verify events.</p>
 </body>
 </html>
