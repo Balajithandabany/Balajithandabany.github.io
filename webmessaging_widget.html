@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Genesys Integration Web</title>
+  <title>Genesys Journey Test</title>
 
+  <!-- Genesys Messenger Snippet -->
   <script type="text/javascript" charset="utf-8">
     (function (g, e, n, es, ys) {
       g['_genesysJs'] = e;
       g[e] = g[e] || function () {
-        (g[e].q = g[e].q || []).push(arguments)
+        (g[e].q = g[e].q || []).push(arguments);
       };
       g[e].t = 1 * new Date();
       g[e].c = es;
@@ -24,53 +25,30 @@
     });
   </script>
 
-  <!-- ADD THIS BLOCK -->
+  <!-- Journey Test Script -->
   <script>
+    // When Journey plugin is ready
     Genesys("subscribe", "Journey.ready", function () {
-      console.log("Journey ready");
+      console.log("✅ Journey ready");
 
-      Genesys("command", "Journey.pageview", {
-        pageTitle: document.title,
-        pageLocation: window.location.href
-      });
-
+      // Send ONE test event
       Genesys("command", "Journey.record", {
         eventName: "balaji_step1_test"
       });
 
-      console.log("Journey pageview + record sent");
+      console.log("✅ Journey test event sent");
     });
 
+    // Messenger ready (just for confirmation)
     Genesys("subscribe", "Messenger.ready", function () {
-      console.log("Messenger ready");
+      console.log("✅ Messenger ready");
     });
   </script>
+
 </head>
+
 <body>
-  <div id="genesys-support-center"></div>
-
-  <h1>Genesys Integration Web</h1>
-  <button id="testJourneyBtn">Send Journey Test Event</button>
-
-  <!-- OPTIONAL STEP 2 -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const btn = document.getElementById("testJourneyBtn");
-
-      if (btn) {
-        btn.addEventListener("click", function () {
-          Genesys("command", "Journey.record", {
-            eventName: "balaji_button_click_test",
-            customAttributes: {
-              page: window.location.pathname,
-              source: "github-pages"
-            }
-          });
-
-          console.log("Button Journey.record sent");
-        });
-      }
-    });
-  </script>
+  <h1>Genesys Journey Test Page</h1>
+  <p>Open console (F12) to see logs.</p>
 </body>
 </html>
