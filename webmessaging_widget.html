@@ -35,30 +35,18 @@
       console.log("✅ Pageview sent");
 
       Genesys("command", "Journey.record", {
-        eventName: "3108 TEST repeated_product_view"
+        eventName: "test_repeated_product_view"
       });
-      console.log("✅ Customer-style event sent");
+      console.log("✅ Clean customer-style event sent");
     });
 
     Genesys("subscribe", "Messenger.ready", function () {
       console.log("✅ Messenger ready");
     });
-
-    Genesys("subscribe", "Journey.qualifiedWebMessagingOffer", function (data) {
-      console.log("✅ Qualified web messaging offer", data);
-    });
-
-    Genesys("subscribe", "Journey.qualifiedContentOffer", function (data) {
-      console.log("✅ Qualified content offer", data);
-    });
-
-    Genesys("subscribe", "Journey.qualifiedOpenAction", function (data) {
-      console.log("✅ Qualified open action", data);
-    });
   </script>
 </head>
 <body>
   <h1>Genesys Journey Customer Replica</h1>
-  <p>Open browser console and then check Live Now in Genesys.</p>
+  <p>Testing clean custom event name.</p>
 </body>
 </html>
