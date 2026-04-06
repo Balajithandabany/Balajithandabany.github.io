@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Genesys Journey Multi Event Test</title>
+  <title>Genesys Journey Controlled Event Test</title>
 
-  <!-- Genesys Snippet -->
   <script type="text/javascript" charset="utf-8">
     (function (g, e, n, es, ys) {
       g['_genesysJs'] = e;
@@ -25,51 +24,35 @@
     });
   </script>
 
-  <!-- Multi Event Test -->
   <script>
     Genesys("subscribe", "Journey.ready", function () {
       console.log("✅ Journey ready");
 
-      // Pageview
       Genesys("command", "Journey.pageview", {
         pageTitle: document.title,
         pageLocation: window.location.href
       });
       console.log("✅ Pageview sent");
 
-      // 🔹 List of mixed event names
       const events = [
-        // ✅ Working formats
-        "test_event_one",
-        "repeated_product_view",
-        "demo_requested",
-        "checkout_started",
-
-        // ❌ Likely problematic formats
+        "test_repeated_product_view",
         "3108 TEST repeated_product_view",
-        "9999 TEST repeated_product_view",
-        "TEST EVENT ONE",
-        "1234 checkout started",
-        "TEST_checkout MIXED 123",
-        "4567 DEMO REQUEST"
+        "repeated_product_view",
+        "1234_repeated_product_view"
       ];
 
-      // Fire all events
       events.forEach((eventName, index) => {
         setTimeout(() => {
           Genesys("command", "Journey.record", {
             eventName: eventName,
             customAttributes: {
-              index: index,
-              format: "test",
-              source: "github-pages"
+              source: "github-pages",
+              order: index + 1
             }
           });
-
-          console.log(`📤 Sent event: ${eventName}`);
-        }, index * 500); // small delay so they don't fire at exact same time
+          console.log("📤 Sent event:", eventName);
+        }, (index + 1) * 3000);
       });
-
     });
 
     Genesys("subscribe", "Messenger.ready", function () {
@@ -79,12 +62,10 @@
     Genesys("subscribe", "Journey.qualifiedWebMessagingOffer", function (data) {
       console.log("🎯 Qualified web messaging offer", data);
     });
-
   </script>
 </head>
-
 <body>
-  <h1>Genesys Journey Multi Event Test</h1>
-  <p>Open Console (F12) and check Live Now.</p>
+  <h1>Genesys Journey Controlled Event Test</h1>
+  <p>Open console and check Live Now over the next 15 seconds.</p>
 </body>
 </html>
