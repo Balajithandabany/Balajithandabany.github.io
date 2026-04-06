@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Genesys Journey Test</title>
+  <title>Genesys Journey Customer Replica</title>
 
-  <!-- Genesys Messenger Snippet -->
   <script type="text/javascript" charset="utf-8">
     (function (g, e, n, es, ys) {
       g['_genesysJs'] = e;
@@ -25,39 +24,26 @@
     });
   </script>
 
-  <!-- Journey Test Script -->
   <script>
     Genesys("subscribe", "Journey.ready", function () {
       console.log("✅ Journey ready");
 
-      // 1️⃣ Send pageview
       Genesys("command", "Journey.pageview", {
         pageTitle: document.title,
-        pageLocation: window.location.href,
-        customAttributes: {
-          testPage: "github"
-        }
+        pageLocation: window.location.href
       });
-      console.log("✅ Journey pageview sent");
+      console.log("✅ Pageview sent");
 
-      // 2️⃣ Send custom event
       Genesys("command", "Journey.record", {
-        eventName: "balaji_console_step2",
-        customAttributes: {
-          source: "github-pages",
-          page: window.location.pathname,
-          env: "test"
-        }
+        eventName: "3108 TEST repeated_product_view"
       });
-      console.log("✅ Journey test event sent");
+      console.log("✅ Customer-style event sent");
     });
 
-    // Messenger ready (sanity check)
     Genesys("subscribe", "Messenger.ready", function () {
       console.log("✅ Messenger ready");
     });
 
-    // 3️⃣ Listen for qualification events (from Predictive Engagement)
     Genesys("subscribe", "Journey.qualifiedWebMessagingOffer", function (data) {
       console.log("✅ Qualified web messaging offer", data);
     });
@@ -70,11 +56,9 @@
       console.log("✅ Qualified open action", data);
     });
   </script>
-
 </head>
-
 <body>
-  <h1>Genesys Journey Step 2 Test</h1>
-  <p>Open Console (F12) to verify events.</p>
+  <h1>Genesys Journey Customer Replica</h1>
+  <p>Open browser console and then check Live Now in Genesys.</p>
 </body>
 </html>
