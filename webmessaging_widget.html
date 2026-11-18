@@ -24,45 +24,47 @@
     });
   </script>
 
-  <script>
-    Genesys("subscribe", "Journey.ready", function () {
-      console.log("✅ Journey ready");
+<!--
+<script>
+  Genesys("subscribe", "Journey.ready", function () {
+    console.log("✅ Journey ready");
 
-      Genesys("command", "Journey.pageview", {
-        pageTitle: document.title,
-        pageLocation: window.location.href
-      });
-      console.log("✅ Pageview sent");
-
-      const events = [
-        "test_repeated_product_view",
-        "3108 TEST repeated_product_view",
-        "repeated_product_view",
-        "1234_repeated_product_view"
-      ];
-
-      events.forEach((eventName, index) => {
-        setTimeout(() => {
-          Genesys("command", "Journey.record", {
-            eventName: eventName,
-            customAttributes: {
-              source: "github-pages",
-              order: index + 1
-            }
-          });
-          console.log("📤 Sent event:", eventName);
-        }, (index + 1) * 3000);
-      });
+    Genesys("command", "Journey.pageview", {
+      pageTitle: document.title,
+      pageLocation: window.location.href
     });
+    console.log("✅ Pageview sent");
 
-    Genesys("subscribe", "Messenger.ready", function () {
-      console.log("✅ Messenger ready");
-    });
+    const events = [
+      "test_repeated_product_view",
+      "3108 TEST repeated_product_view",
+      "repeated_product_view",
+      "1234_repeated_product_view"
+    ];
 
-    Genesys("subscribe", "Journey.qualifiedWebMessagingOffer", function (data) {
-      console.log("🎯 Qualified web messaging offer", data);
+    events.forEach((eventName, index) => {
+      setTimeout(() => {
+        Genesys("command", "Journey.record", {
+          eventName: eventName,
+          customAttributes: {
+            source: "github-pages",
+            order: index + 1
+          }
+        });
+        console.log("📤 Sent event:", eventName);
+      }, (index + 1) * 3000);
     });
-  </script>
+  });
+
+  Genesys("subscribe", "Messenger.ready", function () {
+    console.log("✅ Messenger ready");
+  });
+
+  Genesys("subscribe", "Journey.qualifiedWebMessagingOffer", function (data) {
+    console.log("🎯 Qualified web messaging offer", data);
+  });
+</script>
+-->
 </head>
 <body>
   <h1>Genesys Journey Controlled Event Test</h1>
